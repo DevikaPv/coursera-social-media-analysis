@@ -1,0 +1,79 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns 
+import random
+#Generate random data
+categories = ['Food', 'Travel', 'Fashion', 'Fitness', 'Music', 'Culture', 'Family','Health']
+n=500
+data ={ 'Date':pd.date_range('2021-01-01',periods=n),
+      'Category':[random.choice(categories) for i in range(n)],
+      'Likes':np.random.randint(0,10000, size=n)}
+#Loading
+print("Results")
+print('\n')
+df=pd.DataFrame(data)
+print(df.head())
+print('\n')
+print('#Output for head()of the dataframe')
+print('\n')
+print('\n')
+print(df.info())
+print('\n')
+print('#Output for the info() of the dataframe')
+print('\n')
+print('\n')
+print(df.describe())
+print('\n')
+print('#Output for describe() of the dataframe')
+print('\n')
+print('\n')
+print(df['Category'].value_counts())
+print('\n')
+print('#Output for value_counts() of the dataframe')
+print('\n')
+print('\n')
+
+
+#Cleaning
+df_cleaned=df.dropna()
+print('\n')
+df_cleaned=df_cleaned.drop_duplicates()
+df_cleaned['Date']=pd.to_datetime(df_cleaned['Date'])
+df_cleaned['Likes']=df_cleaned['Likes'].astype(int)
+print(df_cleaned.info())
+print('\n')
+print('#Output for the info() for the cleaned dataframe')
+print('\n')
+print('\n')
+
+#visualising
+sns.distplot(df_cleaned['Likes'],bins=30,kde=False)
+plt.title("Distribution of Likes")
+plt.xlabel("Likes")
+plt.ylabel("Frequency")
+plt.show()
+print('\n')
+print('#Output for the displot created for distribution of likes using seaborn')
+print('\n')
+print('\n')
+
+#Analysing-Graphs2
+sns.boxplot(x="Category",y='Likes',data=df_cleaned)
+plt.title("Category")
+plt.ylabel("Likes")
+plt.xticks(rotation=45)
+plt.show()
+print('\n')
+print("#Output for the boxplot created for the likes by the category using seaborn")
+print('\n')
+print('\n')
+print('\n')
+
+#Statistics
+mean_likes=df_cleaned['Likes'].mean()
+print(f"Overall mean of likes : {mean_likes}")
+mean_likes_by_category=df_cleaned.groupby("Category")['Likes'].mean()
+print(mean_likes_by_category)
+print('\n')
+print("#Output for the overall mean of likes and man for the likes based on the category in the DataFrame")
